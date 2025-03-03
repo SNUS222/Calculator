@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Инженерный калькулятор</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Добавляем конфигурацию перед основным скриптом -->
+    
     <script src="config.js"></script>
 </head>
 <body>
-    <!-- Фоновое видео -->
+    
     <div class="background-video">
         <video id="backgroundVideo" muted loop playsinline>
             <source src="" type="video/mp4" id="backgroundVideoSource">
         </video>
     </div>
 
-    <!-- Загрузочный экран с видео -->
+    
     <div id="loadingScreen" class="loading-screen">
         <video id="loadingVideo" muted autoplay playsinline>
             <source src="" type="video/mp4" id="loadingVideoSource">
@@ -89,15 +89,15 @@
             const loadingVideo = document.getElementById('loadingVideo');
             const backgroundVideo = document.getElementById('backgroundVideo');
             
-            // Устанавливаем пути к видео из конфигурации
+            
             document.getElementById('loadingVideoSource').src = VIDEO_CONFIG.loadingVideo;
             document.getElementById('backgroundVideoSource').src = VIDEO_CONFIG.backgroundVideo;
             
-            // Перезагружаем видео после установки источников
+            
             loadingVideo.load();
             backgroundVideo.load();
 
-            // Обработка ошибок загрузки видео
+            
             loadingVideo.onerror = () => {
                 console.error('Ошибка загрузки вступительного видео');
                 loadingScreen.style.display = 'none';
@@ -118,12 +118,12 @@
                 });
             }
 
-            // После заданного времени скрываем загрузочное видео и показываем калькулятор
+            
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
                 calculatorContainer.style.display = 'block';
                 
-                // Запускаем фоновое видео
+                
                 const playBackgroundVideo = backgroundVideo.play();
                 if (playBackgroundVideo !== undefined) {
                     playBackgroundVideo.catch(error => {
