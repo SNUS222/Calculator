@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инженерный калькулятор</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Добавляем конфигурацию перед основным скриптом -->
+    <script src="config.js"></script>
+</head>
+<body>
+    <!-- Фоновое видео -->
+    <div class="background-video">
+        <video id="backgroundVideo" muted loop playsinline>
+            <source src="" type="video/mp4" id="backgroundVideoSource">
+        </video>
+    </div>
+
+    <!-- Загрузочный экран с видео -->
+    <div id="loadingScreen" class="loading-screen">
+        <video id="loadingVideo" muted autoplay playsinline>
+            <source src="" type="video/mp4" id="loadingVideoSource">
+        </video>
+    </div>
+
+    <!-- Калькулятор -->
+    <div class="calculator-container" id="calculatorContainer" style="display: none;">
+        <div class="calculator">
+            <div class="display">
+                <div class="previous-operand"></div>
+                <div class="current-operand">0</div>
+            </div>
+            <div class="buttons">
+                <!-- Первый ряд -->
+                <button class="function" data-action="clear">C</button>
+                <button class="function" data-action="backspace">⌫</button>
+                <button class="function" data-action="memory-clear">MC</button>
+                <button class="function" data-action="memory-recall">MR</button>
+                <button class="function" data-action="memory-add">M+</button>
+                
+                <!-- Второй ряд -->
+                <button class="function" data-action="sin">sin</button>
+                <button class="function" data-action="cos">cos</button>
+                <button class="function" data-action="tan">tan</button>
+                <button class="operator" data-action="power">^</button>
+                <button class="function" data-action="sqrt">√</button>
+
+                <!-- Третий ряд -->
+                <button class="function" data-action="log">log</button>
+                <button class="function" data-action="ln">ln</button>
+                <button class="constant" data-value="3.14159">π</button>
+                <button class="constant" data-value="2.71828">e</button>
+                <button class="operator">÷</button>
+
+                <!-- Четвертый ряд -->
+                <button class="number">7</button>
+                <button class="number">8</button>
+                <button class="number">9</button>
+                <button class="operator">×</button>
+                <button class="function" data-action="factorial">x!</button>
+
+                <!-- Пятый ряд -->
+                <button class="number">4</button>
+                <button class="number">5</button>
+                <button class="number">6</button>
+                <button class="operator">-</button>
+                <button class="function" data-action="inverse">1/x</button>
+
+                <!-- Шестой ряд -->
+                <button class="number">1</button>
+                <button class="number">2</button>
+                <button class="number">3</button>
+                <button class="operator">+</button>
+                <button class="function" data-action="percent">%</button>
+
+                <!-- Седьмой ряд -->
+                <button class="number">0</button>
+                <button class="number">.</button>
+                <button class="function" data-action="plusMinus">±</button>
+                <button class="equals" data-action="calculate">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const calculatorContainer = document.getElementById('calculatorContainer');
+            const loadingVideo = document.getElementById('loadingVideo');
+            const backgroundVideo = document.getElementById('backgroundVideo');
+            
+            // Устанавливаем пути к видео из конфигурации
+            document.getElementById('loadingVideoSource').src = VIDEO_CONFIG.loadingVideo;
+            document.getElementById('backgroundVideoSource').src = VIDEO_CONFIG.backgroundVideo;
+            
+            // Перезагружаем видео после установки источников
+            loadingVideo.load();
+            backgroundVideo.load();
+
+            // Обработка ошибок загрузки видео
+            loadingVideo.onerror = () => {
+                console.error('Ошибка загрузки вступительного видео');
+                loadingScreen.style.display = 'none';
+                calculatorContainer.style.display = 'block';
+            };
+
+            backgroundVideo.onerror = () => {
+                console.error('Ошибка загрузки фонового видео');
+            };
+
+            // Запускаем загрузочное видео
+            const playLoadingVideo = loadingVideo.play();
+            if (playLoadingVideo !== undefined) {
+                playLoadingVideo.catch(error => {
+                    console.error('Ошибка воспроизведения вступительного видео:', error);
+                    loadingScreen.style.display = 'none';
+                    calculatorContainer.style.display = 'block';
+                });
+            }
+
+            // После заданного времени скрываем загрузочное видео и показываем калькулятор
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                calculatorContainer.style.display = 'block';
+                
+                // Запускаем фоновое видео
+                const playBackgroundVideo = backgroundVideo.play();
+                if (playBackgroundVideo !== undefined) {
+                    playBackgroundVideo.catch(error => {
+                        console.error('Ошибка воспроизведения фонового видео:', error);
+                    });
+                }
+            }, VIDEO_CONFIG.loadingDuration);
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html> 
